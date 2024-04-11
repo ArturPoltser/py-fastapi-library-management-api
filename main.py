@@ -17,8 +17,12 @@ def get_db() -> Session:
 
 
 @app.get("/authors/", response_model=list[schemas.AuthorList])
-def read_authors(db: Session = Depends(get_db)):
-    return crud.get_authors_list(db)
+def read_authors(
+        db: Session = Depends(get_db),
+        skip: int | None = None,
+        limit: int | None = None,
+):
+    return crud.get_authors_list(db=db, skip=skip, limit=limit)
 
 
 @app.post("/authors/", response_model=schemas.AuthorList)
@@ -51,8 +55,18 @@ def read_author(author_id: int, db: Session = Depends(get_db)):
 
 
 @app.get("/books/", response_model=list[schemas.BookList])
-def read_books(author_id: int | None = None, db: Session = Depends(get_db)):
-    return crud.get_books_list(db=db, author_id=author_id)
+def read_books(
+        author_id: int | None = None,
+        skip: int | None = None,
+        limit: int | None = None,
+        db: Session = Depends(get_db)
+):
+    return crud.get_books_list(
+        db=db,
+        author_id=author_id,
+        skip=skip,
+        limit=limit
+    )
 
 
 @app.post("/books/", response_model=schemas.BookList)

@@ -44,10 +44,6 @@ def get_books_list(
     return queryset.offset(skip).limit(limit).all()
 
 
-def get_book(db: Session, book_id: int):
-    return db.query(models.Book).filter(models.Book.id == book_id).first()
-
-
 def create_book(db: Session, book: schemas.BookCreate):
     db_book = models.Book(
         title=book.title,
